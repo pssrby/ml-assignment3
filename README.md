@@ -64,13 +64,27 @@ bash scripts/run_experiments.sh
 
 每个运行目录包含：
 
-- `checkpoint_last.pt`：模型、EMA、优化器和最后一个 epoch；
+- `checkpoint_last.pt`：模型、EMA、优化器和最后一个 epoch（提交包中仅成员 E 保留该文件）；
 - `history.csv` / `train.log`：逐 epoch 损失、训练准确率和耗时；
 - `metrics.json`：参数量、测试准确率、逐类准确率等；
 - `test_probs.npy` / `test_labels.npy`：测试集概率和标签，用于集成。
 
 ## 测试集集成
+提交包为控制体积只保留了一个权重文件，即集成中单模型准确率最高的成员 E：
+`outputs/runs/E_wrn28_10_ra_cutmix/checkpoint_last.pt`。无需重新训练，即可用它复算
+报告中的单模型结果：
 
+```bash
+python src/predict.py \
+  --checkpoint outputs/runs/E_wrn28_10_ra_cutmix/checkpoint_last.pt \
+  --data-dir data/CIFAR10
+```
+
+默认使用 EMA 权重和水平翻转 TTA，预期准确率为 **97.00%**；加 `--weights raw`
+则使用最后一个 epoch 的普通权重，预期为 96.88%。脚本会从 checkpoint 里保存的
+`args` 自动重建网络结构，因此不需要再手工指定网络参数。
+
+集成方式为各模型（水平翻转 TTA 后）的 softmax 概率等权平均。
 ```bash
 python src/ensemble.py --run-dirs \
   outputs/runs/A_wrn28_10_cutmix \
@@ -81,13 +95,12 @@ python src/ensemble.py --run-dirs \
   --output-dir outputs/ensemble
 ```
 
-集成方式为各模型（水平翻转 TTA 后）的 softmax 概率等权平均。
-
 ## 文件
 
 - `src/models.py`：WRN-28-10 与可选 SE 模块；
 - `src/train.py`：数据增广、训练、EMA、TTA 测试；
 - `src/ensemble.py`：多模型概率平均与混淆矩阵统计；
+- `src/predict.py`：加载单个 checkpoint 快速复算测试准确率；
 - `scripts/run_experiments.sh`：复现实验用的 5 模型训练脚本；
 - `report.md`：实验报告（网络结构、参数、结果分析）。
 

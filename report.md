@@ -141,11 +141,13 @@ conda activate ml-assignment3
 bash scripts/run_experiments.sh
 ```
 
+详细的复现方式见[`README.md`](README.md)
 脚本并行启动 5 个训练任务，结束后自动调用 `src/ensemble.py` 生成集成结果。单模型
 训练命令和输出文件说明见 `README.md`。所有测试结果由
-`outputs/ensemble/ensemble_metrics.json` 记录，每个成员的完整日志、`metrics.json`、
-测试概率和 checkpoint 位于 `outputs/runs/`。
-
+`outputs/ensemble/ensemble_metrics.json` 记录，每个成员的完整日志、`metrics.json`
+和测试概率位于 `outputs/runs/`；为控制提交体积，只保留单模型最优成员 E 的
+checkpoint（`outputs/runs/E_wrn28_10_ra_cutmix/checkpoint_last.pt`），可用
+`python src/predict.py` 快速复算其测试准确率。
 ## 6. 结论
 
 实验表明，WRN-28-10 的宽度换来了较强的 CIFAR-10 表征能力；CutMix/MixUp、
