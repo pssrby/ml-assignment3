@@ -17,9 +17,20 @@ bird、cat、deer、dog、frog、horse、ship、truck。压缩包中训练集实
 预定配方独立训练后统一评估，训练集与测试集的类别映射由文件夹名称自动生成并校验
 一致。
 
-实验环境为 Python 3.10、PyTorch 2.5.1、torchvision 0.20.1、CUDA 12.1，GPU 为
-NVIDIA GeForce RTX 3090（24 GB）。训练使用 BF16 自动混合精度和 channels-last
-内存格式。
+实验环境为 Python 3.10.22、PyTorch 2.5.1+cu121、torchvision 0.20.1+cu121、
+NumPy 2.2.6，GPU 为 NVIDIA GeForce RTX 3090（24 GB），驱动版本 550.107.02。
+训练使用 BF16 自动混合精度和 channels-last 内存格式。在仓库根目录可按以下命令
+配置环境：
+
+```bash
+conda create -n ml-assignment3 python=3.10 pip -y
+conda activate ml-assignment3
+pip install -r requirements.txt
+```
+
+`requirements.txt` 指定了 PyTorch cu121 源，PyTorch 自带 CUDA 12.1 运行时，因此
+无需在 conda 中单独安装 CUDA 工具包。安装完成后可用
+`python -c "import torch; print(torch.cuda.is_available())"` 检查 GPU 是否可用。
 
 ## 2. 网络结构
 

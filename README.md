@@ -7,10 +7,25 @@ CIFAR-10 十类图像分类，并用多个独立训练模型的概率平均集�
 
 ## 环境
 
-- Python 3.10
-- PyTorch 2.5.1 + CUDA 12.1
-- torchvision 0.20.1
-- 训练使用 NVIDIA RTX 3090，BF16 自动混合精度
+本项目在 Python 3.10、PyTorch 2.5.1（CUDA 12.1）、torchvision 0.20.1 下测试，
+GPU 为 NVIDIA RTX 3090，训练使用 BF16 自动混合精度。
+
+首次运行时，在仓库根目录用 conda 创建环境并安装依赖：
+
+```bash
+conda create -n ml-assignment3 python=3.10 pip -y
+conda activate ml-assignment3
+pip install -r requirements.txt
+```
+
+`requirements.txt` 已指定 PyTorch cu121 软件源，PyTorch 会自带所需的 CUDA 12.1
+运行时；宿主机只需安装可支持 CUDA 12.1 的 NVIDIA 驱动。安装后可检查 GPU 是否可用：
+
+```bash
+python -c "import torch; print(torch.__version__); print(torch.cuda.is_available())"
+```
+
+预期输出包含 `2.5.1+cu121` 和 `True`。环境已配置好时，只需激活：
 
 ```bash
 conda activate ml-assignment3
