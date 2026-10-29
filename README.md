@@ -89,6 +89,6 @@ python src/ensemble.py --run-dirs \
 - `src/train.py`：数据增广、训练、EMA、TTA 测试；
 - `src/ensemble.py`：多模型概率平均与混淆矩阵统计；
 - `scripts/run_experiments.sh`：复现实验用的 5 模型训练脚本；
-- `docs/report.md`：实验报告（网络结构、参数、结果分析）。
+- `report.md`：实验报告（网络结构、参数、结果分析）。
 
-最终测试结果和详细分析见 [`docs/report.md`](docs/report.md)。
+最终测试结果和详细分析见 [`report.md`](report.md)。
